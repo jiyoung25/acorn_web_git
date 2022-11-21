@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  * 2. 어떤 요청에 대해 필터링을 할 것인지 mapping한다.
  */
 
-@WebFilter("/private/*")  //private 폴더 하위의 모든 파일
+@WebFilter(urlPatterns = {"/private/*","/users/private/*"})
 public class LoginFilter implements Filter {
 	
 	@Override

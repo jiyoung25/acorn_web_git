@@ -100,4 +100,79 @@ public class UsersDao {
 
 		return rowCount == 0 ? false : true;
 	}
+	
+	public UsersDto getData(String id) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs=null;
+		
+		UsersDto dto = new UsersDto();
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "SELECT pwd, email, profile, TO_CHAR(regdate, 'YYYY.MM.DD') AS regdate"
+					+ " FROM users"
+					+ " WHERE id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				dto.setId(id);
+				dto.setPwd(rs.getString(1)); //rs.getString("pwd")도 가능
+				dto.setEmail(rs.getString(2));
+				dto.setProfile(rs.getString(3));
+				dto.setRegdate(rs.getString(4));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return dto;
+	}
+	
+	public boolean update_pwd(String id, String pwd) {
+		
+		int rowCount = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "UPDATE users"
+					+ " SET pwd=?"
+					+ " WHERE id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pwd);
+			pstmt.setString(2, id);
+			rowCount = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rowCount > 0 ? true : false;
+	}
 }
