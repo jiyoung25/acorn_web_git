@@ -3,15 +3,18 @@
 <%@page import="test.users.dao.UsersDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%
+    <% 
+    	//파라미터를 추출하기 전에 미리 한글이 깨지지 않도록 설정하기
+   		request.setCharacterEncoding("utf-8");
     
     	//로그인 후 가야할 목적지 정보
     	String url = request.getParameter("url");
+    	
     	//로그인 실패를 대비해서 목적지 정보를 인코딩한 결과도 준비한다.
-    	String encodeUrl=URLEncoder.encode(url);
+    	String encodedUrl=URLEncoder.encode(url);
     	
     	//1. 폼에서 전송되는 아이디와 비밀번호 읽어오기
-    	request.setCharacterEncoding("utf-8");
+    	
     	String id = request.getParameter("id");
     	String pwd = request.getParameter("pwd");
     	//2. DB에 실제로 존재하는 정보인지 확인한다.
@@ -41,7 +44,7 @@
 		<p><a href="<%=url %>">확인</a></p>
 	<%} else{ %>
 		<p class="alert alert-danger">로그인 실패. 아이디나 비밀번호를 다시 확인해주세요.</p>
-		<p><a href="${pageContext.request.contextPath}/users/loginform.jsp?url=<%=encodeUrl %>">로그인 화면으로 돌아가기</a></p>
+		<p><a href="${pageContext.request.contextPath}/users/loginform.jsp?url=<%=encodedUrl %>">로그인 화면으로 돌아가기</a></p>
 	<%} %>
 </body>
 </html>
