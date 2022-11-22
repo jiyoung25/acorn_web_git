@@ -5,10 +5,12 @@
     pageEncoding="UTF-8"%>
     <% 
     	//파라미터를 추출하기 전에 미리 한글이 깨지지 않도록 설정하기
-   		request.setCharacterEncoding("utf-8");
+    	//EncoingFilter 걸어놨으므로 설정하지 않아도 깨지지 않게 되었음.
+   		//request.setCharacterEncoding("utf-8");
     
     	//로그인 후 가야할 목적지 정보
     	String url = request.getParameter("url");
+    	System.out.println(url);
     	
     	//로그인 실패를 대비해서 목적지 정보를 인코딩한 결과도 준비한다.
     	String encodedUrl=URLEncoder.encode(url);
@@ -16,6 +18,7 @@
     	//1. 폼에서 전송되는 아이디와 비밀번호 읽어오기
     	
     	String id = request.getParameter("id");
+    	System.out.println(id);
     	String pwd = request.getParameter("pwd");
     	//2. DB에 실제로 존재하는 정보인지 확인한다.
     	UsersDto dto = new UsersDto();

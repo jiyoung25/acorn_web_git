@@ -26,6 +26,7 @@
 			<%--private는 로그인 해야만 들어갈 수 있는 폴더이다. --%>
 			<li><a href="${pageContext.request.contextPath}/private/study.jsp">회원 전용 공간(공부)</a></li>
 			<li><a href="${pageContext.request.contextPath}/private/game.jsp">회원 전용 공간(게임)</a></li>
+			<li><a href="file/list.jsp">자료실</a></li>
 		</ul>
 	</div>
 </body>

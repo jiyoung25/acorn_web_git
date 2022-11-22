@@ -2,8 +2,9 @@
     pageEncoding="UTF-8"%>
 <%
 	//get방식 파라미터 url이라는 이름으로 전달되는 값이 있는지 읽어와본다.
-	String url = request.getParameter("url");
-	//만일 넘어오는 값이 없다면
+	String url = request.getParameter("url"); // /Step04_Final/private/study.jsp
+	System.out.println(url);
+	//만일 넘어오는 값이 없다면 (LoginFilter에 걸리지 않고 loginform페이지로 오면 null값이 전송되어온다.)
 	if(url==null){
 		//로그인 후에 인덱스 페이지로 갈 수 있도록 한다.
 		String cPath=request.getContextPath();

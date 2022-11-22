@@ -239,4 +239,45 @@ public class UsersDao {
 
 		return rowCount == 0 ? false : true;
 	}
+	
+	public String getPwdJoin(String id) {
+		
+		String pwd = "";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "SELECT pwd"
+					+ " FROM users"
+					+ " INNER JOIN file ON users.id = file.writer"
+					+ " WHERE id = ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				pwd = rs.getString("pwd");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("오류가 생겨 리스트를 불러올 수 없습니다.");
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close(); //Connection Pool에 Connection반납하기
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return pwd;
+	}
 }
