@@ -144,7 +144,7 @@ public class UsersDao {
 		return dto;
 	}
 	
-	public boolean update_pwd(String id, String pwd) {
+	public boolean updatePwd(UsersDto dto) {
 		
 		int rowCount = 0;
 		Connection conn = null;
@@ -154,10 +154,11 @@ public class UsersDao {
 			conn = new DbcpBean().getConn();
 			String sql = "UPDATE users"
 					+ " SET pwd=?"
-					+ " WHERE id=?";
+					+ " WHERE id=? AND pwd = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, pwd);
-			pstmt.setString(2, id);
+			pstmt.setString(1, dto.getNewPwd());
+			pstmt.setString(2, dto.getId());
+			pstmt.setString(3, dto.getPwd());
 			rowCount = pstmt.executeUpdate();
 
 		} catch (Exception e) {
@@ -173,6 +174,6 @@ public class UsersDao {
 			}
 		}
 
-		return rowCount > 0 ? true : false;
+		return rowCount == 0 ? false : true;
 	}
 }

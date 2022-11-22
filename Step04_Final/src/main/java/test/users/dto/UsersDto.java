@@ -3,6 +3,7 @@ package test.users.dto;
 public class UsersDto {
 	private String id;
 	private String pwd;
+	private String newPwd;
 	private String email;
 	private String profile;
 	private String regdate;
@@ -11,14 +12,19 @@ public class UsersDto {
 		
 	}
 
-	public UsersDto(String id, String pwd, String email, String profile, String regdate) {
+	
+
+	public UsersDto(String id, String pwd, String newPwd, String email, String profile, String regdate) {
 		super();
 		this.id = id;
 		this.pwd = pwd;
+		this.newPwd = newPwd;
 		this.email = email;
 		this.profile = profile;
 		this.regdate = regdate;
 	}
+
+
 
 	public String getId() {
 		return id;
@@ -35,6 +41,16 @@ public class UsersDto {
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
+	
+	
+	public String getNewPwd() {
+		return newPwd;
+	}
+
+	public void setNewPwd(String newPwd) {
+		this.newPwd = newPwd;
+	}
+
 
 	public String getEmail() {
 		return email;

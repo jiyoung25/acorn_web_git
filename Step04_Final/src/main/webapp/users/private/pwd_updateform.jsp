@@ -14,16 +14,37 @@
 </head>
 <body>
 	<div class="container">
-		<h1>비밀번호 변경하기</h1>
-		<form action="pwd_update.jsp" method="post">
-			<label for="current_pwd"> 현재 비밀번호
-				<input type="text" id="current_pwd" name="current_pwd"/ value="<%=dto.getPwd()%>" disabled>
-			</label>
-			<label for="update_pwd"> 수정할 비밀번호
-				<input type="password" id="update_pwd" name="update_pwd" value="<%=dto.getPwd() %>"/>
-			</label>
-			<button type="submit"> 변경하기 </button>
+		<h1>비밀번호 수정 폼</h1>
+		<form action="pwd_update.jsp" method = "post" id = "myForm">
+			<div>
+				<label for="pwd">기존 비밀번호</label>
+				<input type="password" name="pwd" id="pwd" />
+			</div>
+			<div>
+				<label for="newPwd">새 비밀번호</label>
+				<input type="password" name="newPwd" id="newPwd" />
+			</div>
+			<div>
+				<label for="newPwd2">새 비밀번호 확인</label>
+				<input type="password" name="newPwd2" id="newPwd2" />
+			</div>
+			<button type="submit">수정하기</button>
+			<button type="reset">리셋</button>
 		</form>
+		<script>
+		//폼에 submit이벤트가 일어났을 떄 실행할 힘수를 등록하고
+			document.querySelector("#myForm").addEventListner("submit", function(event){
+				//폼 제출 막기
+				//event.preventDefault();
+				//새 비밀번호와 확인이 일치하면 폼 전송을 막는다.
+				if(pwd1!=pwd2){
+					alert("비밀번호를 확인하세요!");
+					event.preventDefault();//폼 막기
+					
+					
+				}
+			});
+		</script>
 	</div>
 </body>
 </html>
