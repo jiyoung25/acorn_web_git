@@ -35,7 +35,7 @@
 	   String saveFileName=dto.getSaveFileName();
 	   //다운로드 시켜줄 파일의 실제 경로 구성하기 
 	   String path=application.getRealPath("/upload") + File.separator + saveFileName;
-	   System.out.println(File.separator);
+	   System.out.println(File.separator);  // File.separator 은 / \ |이런거다. linux window 등의 운영체제에 따라 separator가 다르다.
 	   //다운로드할 파일에서 읽어들일 스트림 객체 생성하기
 	   FileInputStream fis=new FileInputStream(path);
 	   //다운로드 시켜주는 작업을 한다. (실제 파일 데이터와 원본파일명을 보내줘야한다.)
@@ -59,6 +59,10 @@
 	   
 	   //다운로드할 파일의 크기 읽어와서 다운로드할 파일의 크기 설정
 	   response.setContentLengthLong(dto.getFileSize());
+	   
+	   //Exception이 발생하지 않도록(response.getOutputStream()호출 전에 해야한다.)
+	   out.clear();
+	   out=pageContext.pushBody();
 	   
 	   //클라이언트에게 출력할수 있는 스트림 객체 얻어오기
 	   BufferedOutputStream bos=
