@@ -61,6 +61,7 @@
 	   response.setContentLengthLong(dto.getFileSize());
 	   
 	   //Exception이 발생하지 않도록(response.getOutputStream()호출 전에 해야한다.)
+	   //자세한 내용 : 2022.11.23 텍스트폴더 파일에 존재
 	   out.clear();
 	   out=pageContext.pushBody();
 	   

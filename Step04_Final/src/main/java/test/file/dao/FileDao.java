@@ -21,9 +21,8 @@ public class FileDao {
 		return dao;
 	}
 	
-	public List<FileDto> getList() {
-		List<FileDto> list = new ArrayList<>();
-		FileDto dto = null;
+	public int getCount() {
+		int count = 0;
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -31,24 +30,15 @@ public class FileDao {
 
 		try {
 			conn = new DbcpBean().getConn();
-			String sql = "SELECT num, writer, title, orgFileName, filesize, regdate"
-					+ " FROM board_file"
-					+ " ORDER BY num DESC";
+			//생성할 sql문의 뼈대 구성하기
+			String sql = "SELECT MAX(ROWNUM) AS num"
+					+ " FROM board_file";
+			//sql문의 ?에 바인딩 할 것이 있으면 한다.
 
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				//row 하나의 정보를 dto에 담기
-				dto = new FileDto();
-				
-				dto.setNum(rs.getInt("num"));
-				dto.setWriter(rs.getString("writer"));
-				dto.setTitle(rs.getString("title"));
-				dto.setOrgFileName(rs.getString("orgFileName"));
-				dto.setFileSize(rs.getLong("filesize"));
-				dto.setRegdate(rs.getString("regdate"));
-				
-				list.add(dto);
+			if (rs.next()) {
+				count=rs.getInt(1);
 			}
 
 		} catch (Exception e) {
@@ -67,10 +57,65 @@ public class FileDao {
 			}
 		}
 
-		return list;
-		
-	//업로드된 파일 정보를 DB에 저장하는 메소드
+		return count;
 	}
+	
+	   public List<FileDto> getList(FileDto dto){
+		      //파일 목록을 담을 ArrayList 객체 생성 
+		      List<FileDto> list=new ArrayList<FileDto>();
+		      
+		      //필요한 객체를 담을 지역변수를 미리 만들어 둔다. 
+		      Connection conn = null;
+		      PreparedStatement pstmt = null;
+		      ResultSet rs = null;
+		      try {
+		         //Connection Pool 에서 Connection 객체를 하나 얻어온다.
+		         conn = new DbcpBean().getConn();
+		         //실행할 sql 문의 뼈대 구성하기
+		         String sql = "SELECT * "
+		               + " FROM"
+		               + "   (SELECT result1.*, ROWNUM AS rnum"
+		               + "   FROM"
+		               + "      (SELECT num, writer, title, orgFileName, fileSize, regdate"
+		               + "      FROM board_file"
+		               + "      ORDER BY num DESC) result1)"
+		               + " WHERE rnum BETWEEN ? AND ?";
+		         //sql 문의 ? 에 바인딩 할게 있으면 한다.
+		         pstmt = conn.prepareStatement(sql);
+		         pstmt.setInt(1, dto.getStartRowNum());
+		         pstmt.setInt(2, dto.getEndRowNum());
+		         
+		         //SELECT 문을 수행하고 결과값을 받아온다.
+		         rs = pstmt.executeQuery();
+		         //반복문 돌면서 ResultSet 에서 필요한 값을 얻어낸다.
+		         while (rs.next()) {
+		            //FileDto 객체에 select 된 row 하나의 정보를 담고
+		            FileDto tmp=new FileDto();
+		            tmp.setNum(rs.getInt("num"));
+		            tmp.setWriter(rs.getString("writer"));
+		            tmp.setTitle(rs.getString("title"));
+		            tmp.setOrgFileName(rs.getString("orgFileName"));
+		            tmp.setFileSize(rs.getLong("fileSize"));
+		            tmp.setRegdate(rs.getString("regdate"));
+		            //ArrayList 객체에 누적 시킨다.
+		            list.add(tmp);
+		         }
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      } finally {
+		         try {
+		            if (rs != null)
+		               rs.close();
+		            if (pstmt != null)
+		               pstmt.close();
+		            if (conn != null)
+		               conn.close(); //Connection Pool 에 Connection 반납하기
+		         } catch (Exception e) {
+		         }
+		      }
+		      return list;
+		   }
+
 	
 	public boolean insert(FileDto dto) {
 		int rowCount = 0;

@@ -6,7 +6,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-   List<FileDto> list = FileDao.getInstance().getList();
+	final int PAGE_ROW_COUNT = 5;
+	int pageNum = 1;
+	int startRowNum = 1+(pageNum-1) * PAGE_ROW_COUNT;
+	int endRowNum = pageNum * PAGE_ROW_COUNT;
+	
+	FileDto dto = new FileDto();
+	dto.setStartRowNum(startRowNum);
+	dto.setEndRowNum(endRowNum);
+	
+    List<FileDto> list = FileDao.getInstance().getList(dto);
 %>
 <!DOCTYPE html>
 <html>
@@ -50,7 +59,7 @@
       </table>
    </div>
    <script>
-
+	
    </script>
 </body>
 </html>
