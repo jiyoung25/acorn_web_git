@@ -27,6 +27,7 @@
 			<li><a href="${pageContext.request.contextPath}/private/study.jsp">회원 전용 공간(공부)</a></li>
 			<li><a href="${pageContext.request.contextPath}/private/game.jsp">회원 전용 공간(게임)</a></li>
 			<li><a href="file/list.jsp">자료실</a></li>
+			<li><a href="file/list_T.jsp">자료실_T</a></li>
 		</ul>
 	</div>
 </body>
