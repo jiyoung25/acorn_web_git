@@ -30,6 +30,7 @@
 		 	</div>
 		 	<button type="submit">업로드</button>
 		 </form>
+		 
 	</div>
 </body>
 </html>

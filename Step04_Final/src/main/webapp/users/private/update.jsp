@@ -6,10 +6,17 @@
 	//1. 수정할 회원의 정보를 읽어와서
 	String id=(String)session.getAttribute("id");
 	String email=request.getParameter("email");
+	String profile = request.getParameter("profile"); //값 없으면 null
 	
 	UsersDto dto = new UsersDto();
 	dto.setId(id);
 	dto.setEmail(email);
+	
+	//만일 profile이미지를 등록했다면 (profile이미지가 !empty)
+	if(!profile.equals("empty")){
+		//dto에 전송된 프로필 이미지 경로를 담아준다.
+		dto.setProfile(profile);
+	}
 	
 	//2.DB에 수정 반영
 	boolean isSuccess = UsersDao.getInstance().update(dto);
