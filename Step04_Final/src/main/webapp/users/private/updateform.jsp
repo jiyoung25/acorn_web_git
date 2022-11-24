@@ -37,6 +37,7 @@
               </svg>
            <%}else{ %>
               <img id="profileImage" src="${pageContext.request.contextPath }<%=dto.getProfile()%>">
+              <%System.out.println(dto.getProfile()); %>
            <%} %>
         </a>
 		<form action="update.jsp" method="post">
@@ -59,35 +60,35 @@
 		 	<button type="submit">업로드</button>
 		 </form>
 	</div>
-	   <!-- gura_util.js 로딩 -->
-   <script src="${pageContext.request.contextPath }/js/gura_util.js"></script>
-   <script>
-      //프로필 이미지 링크를 클릭하면 
-      document.querySelector("#profileLink").addEventListener("click", function(){
-         // input type="file" 을 강제 클릭 시킨다. 
-         document.querySelector("#image").click();
-      });
-      //프로필 이미지를 선택하면(바뀌면) 실행할 함수 등록
-      document.querySelector("#image").addEventListener("change", function(){
-         //ajax 전송할 폼의 참조값 얻어오기
-         const form=document.querySelector("#imageForm");
-         //gura_util.js 에 있는 함수를 이용해서 ajax 전송하기 
-         ajaxFormPromise(form)
-         .then(function(response){
-            return response.json();
-         })
-         .then(function(data){
-            console.log(data);
-            // input name="profile" 요소의 value 값으로 이미지 경로 넣어주기
-            document.querySelector("input[name=profile]").value=data.imagePath;
-            
-            //img요소를 문자열로 작성한 다음
-            let img=`<img id="profileImage" 
-               src="${pageContext.request.contextPath }\${data.imagePath}">`;
-            //id가 profileLink인 요소의 내부(자식 요소)에 덮어쓰기 하면서 html형식으로 해석해주세요. 라는 뜻 
-            document.querySelector("#profileLink").innerHTML=img;
-         });
-      });
+	<!-- gura_util.js 로딩 -->
+   	<script src="${pageContext.request.contextPath }/js/gura_util.js"></script>
+   	<script>
+		//프로필 이미지 링크를 클릭하면 
+		document.querySelector("#profileLink").addEventListener("click", function(){
+		   // input type="file" 을 강제 클릭 시킨다. 
+		   document.querySelector("#image").click();
+		});
+		//프로필 이미지를 선택하면(바뀌면) 실행할 함수 등록
+		document.querySelector("#image").addEventListener("change", function(){
+			//ajax 전송할 폼의 참조값 얻어오기
+			const form=document.querySelector("#imageForm");
+			//gura_util.js 에 있는 함수를 이용해서 ajax 전송하기 
+			ajaxFormPromise(form)
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				console.log(data);
+				// input name="profile" 요소의 value 값으로 이미지 경로 넣어주기
+				document.querySelector("input[name=profile]").value=data.imagePath;
+			   
+				//img요소를 문자열로 작성한 다음
+				let img=`<img id="profileImage" 
+				   src="${pageContext.request.contextPath }\${data.imagePath}">`;
+				//id가 profileLink인 요소의 내부(자식 요소)에 덮어쓰기 하면서 html형식으로 해석해주세요. 라는 뜻 
+				document.querySelector("#profileLink").innerHTML=img;
+			});
+		});
       
    </script>
 </body>

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  * 2. 어떤 요청에 대해 필터링을 할 것인지 mapping한다.
  */
 //Q.어떤 파일에 필터를 끼울 것인가?
-@WebFilter(urlPatterns = {"/private/*","/users/private/*","/file/private/*"})
+@WebFilter(urlPatterns = {"/private/*","/users/private/*","/file/private/*", "/cafe/private/*"})
 //A. /private와 /users/private 경로 안에 있는 모든 파일에 필터를 끼울 것이다.
 public class LoginFilter implements Filter {
 	
