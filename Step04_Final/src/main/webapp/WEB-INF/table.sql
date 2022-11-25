@@ -35,3 +35,14 @@ CREATE TABLE board_cafe(
 
 -- 게시글의 번호를 얻어낼 시퀀스
 CREATE SEQUENCE board_cafe_seq;
+
+
+-- SELECT 문
+SELECT *
+FROM
+	(SELECT result1.*, ROWNUM AS rnum
+	FROM
+		(SELECT num, writer, title, viewCount, TO_CHAR(regdate, 'YYYY.MM.DD') AS regdate
+		FROM board_cafe
+		ORDER BY num DESC) result1)
+WHERE rnum BETWEEN ? AND ?

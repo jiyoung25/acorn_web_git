@@ -75,6 +75,60 @@ public class CafeDao {
 		return list;
 	}
 	
+	public List<CafeDto> getRowList(CafeDto dto) {
+		List<CafeDto> list = new ArrayList<>();
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			
+			String sql = "SELECT *"
+					+ " FROM"
+					+ " 	(SELECT result1.*, ROWNUM AS rnum"
+					+ " 	FROM"
+					+ "			(SELECT num, writer, title, viewCount, TO_CHAR(regdate, 'YYYY.MM.DD') AS regdate"
+					+ "			FROM board_cafe"
+					+ "			ORDER BY num DESC) result1)"
+					+ " WHERE rnum BETWEEN ? AND ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getStartRowNum());
+			pstmt.setInt(2, dto.getEndRowNum());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				dto = new CafeDto();
+				
+				dto.setNum(rs.getInt(1));
+				dto.setWriter(rs.getString(2));
+				dto.setTitle(rs.getString(3));
+				dto.setViewCount(rs.getInt(4));
+				dto.setRegdate(rs.getString(5));
+				
+				list.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("오류가 생겨 리스트를 불러올 수 없습니다.");
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close(); //Connection Pool에 Connection반납하기
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return list;
+	}
+	
 	public boolean insert(CafeDto dto) {
 		int rowCount = 0;
 		Connection conn = null;
@@ -153,7 +207,7 @@ public class CafeDao {
 		return dto;
 	}
 	
-	public boolean countUpdate(int num, int viewCount) {
+	public boolean addViewCount(int num, int viewCount) {
 		int rowCount = 0;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -218,5 +272,73 @@ public class CafeDao {
 		}
 
 		return rowCount> 0 ? true : false;
+	}
+	
+	public boolean delete(int num) {
+		int rowCount = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "DELETE FROM board_cafe"
+					+ " WHERE num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rowCount = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("delete실패");
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rowCount > 0 ? true : false;
+	}
+	
+	//전체 글의 개수를 리턴하는 메소드
+	public int getCount() {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "SELECT MAX(ROWNUM) AS num"
+					+ " FROM board_cafe";
+
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt("num");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("오류가 생겨 리스트를 불러올 수 없습니다.");
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return count;
 	}
 }

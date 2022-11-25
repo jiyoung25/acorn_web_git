@@ -11,7 +11,7 @@
 	int viewCount = dto.getViewCount()+1;
 	String regdate = dto.getRegdate();
 	
-	CafeDao.getInstance().addViewCount(num,viewCount);
+	CafeDao.getInstance().countUpdate(num,viewCount);
 %>
 <!DOCTYPE html>
 <html>
@@ -50,36 +50,15 @@
 				1. textarea에 출력하기
 				2. <pre></pre> 요소 안에 출력
 				3. 개행기호를 찾아서 <br>로 대체
-				4. div에 내용 넣기
 			 --%>
 			<tr>
 				<th>글 내용</th>
 				<%-- <td><textarea rows="10" readonly><%=dto.getContent() %></textarea></td> --%>
-				<td><pre><%=dto.getContent() %></pre></td>
-				<%-- <td><%=dto.getContent().replaceAll("\n", "<br>") %></td>--%>
-				<%-- <td colspan = "2">
-					<div><%=dto.getContent() %></div>
-				</td> --%>
+				<%-- <td><pre><%=dto.getContent() %></pre></td> --%>
+				<td><%=dto.getContent().replaceAll("\n", "<br>") %></td>
+				
 			</tr>
 		</table>
-		<%
-			//로그인된 아이디 ( null의 가능성 염두해두기 )
-			String id = (String)session.getAttribute("id");
-		%>
-		<%--만일 글 작성자가 로그인된 아이디와 같다면 수정, 삭제 링크를 제공한다. --%>
-		<%if(dto.getWriter().equals(id)){ %>
-        	<a href="private/updateform.jsp?num=<%=dto.getNum()%>">수정</a>
-       		<a href="javascript:" onclick="deleteConfirm()">삭제</a>
-        	<script>
-          		function deleteConfirm(){
-              		const isDelete=confirm("이 글을 삭제 하겠습니까?");
-             		if(isDelete){
-                		location.href="private/delete.jsp?num=<%=dto.getNum()%>";
-              		}
-           		}
-       		</script>
-     	<%}%>
-		
 		<a href="${pageContext.request.contextPath}/cafe/list.jsp">리스트 목록으로</a>
 	</div>
 	

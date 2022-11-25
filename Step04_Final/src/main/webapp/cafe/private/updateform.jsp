@@ -26,7 +26,7 @@
 				<label for="content">내용</label>
 				<textarea name = "content" id="content" ><%=dto.getContent() %></textarea>
 			</div>
-			<button type="submit">수정하기</button>
+			<button type="submit" onclick = " submitContents(this) ">수정하기</button>
 			<button type="reset">초기화</button>
 			<button type="button" onclick = "location.href='${pageContext.request.contextPath}/cafe/list.jsp'" >리스트로 돌아가기</button>
 		</form>
