@@ -29,7 +29,7 @@
 	<%} else{%>
 		<script>
 			alert("글 작성에 실패했습니다.\n다시 시도해주세요.");
-			location.href = "${pageContext.request.contextPath}/cafe/private/insertform.jsp"
+			location.href = "insertform.jsp"
 		</script>
 	<%} %>
 </body>

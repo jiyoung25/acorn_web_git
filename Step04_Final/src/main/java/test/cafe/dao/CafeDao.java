@@ -184,4 +184,39 @@ public class CafeDao {
 
 		return rowCount > 0 ? true : false;
 	}
+	
+	public boolean update(CafeDto dto) {
+		int rowCount = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "UPDATE board_cafe"
+					+ " SET title = ?, content = ?"
+					+ " WHERE num = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setInt(3, dto.getNum());
+			
+			rowCount = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("무언가 문제가 생겨 update 실패");
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rowCount> 0 ? true : false;
+	}
 }
