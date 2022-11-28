@@ -139,9 +139,7 @@
 			//폼 전체의 유효성 여부
 			const isFormValid = isEmailValid&&isIdValid&&isPwdValid;
 			console.log(isFormValid);
-			if(isFormValid){
-				this.submit();
-			} else{
+			if(!isFormValid){
 				alert("회원가입 양식을 다시 확인해주세요.");
 				event.preventDefault(); //폼 전송 막기
 			}
