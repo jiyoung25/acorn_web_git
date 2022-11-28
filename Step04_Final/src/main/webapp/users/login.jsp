@@ -39,15 +39,29 @@
 <title>/users/login.jsp</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+	<style>
+		#profileImage{
+			width : 50px;
+			border-radius: 5px;
+		}
+		h3{
+			text-align:center;
+		}
+	</style>
 </head>
 <body>
+	<%if(id==null) {%>
+		<jsp:include page="/include/navbar.jsp"></jsp:include>
+	<%} else{ %>
+		<jsp:include page="/include/navbar2.jsp"></jsp:include>
+	<%} %>
 	<%if(isValid){ %>
 		<p class="alert alert-success">
 		<strong><%=dto.getId() %>님</strong> 로그인에 성공하셨습니다.</p>
-		<p><a href="<%=url %>">확인</a></p>
+		<p><a class="btn btn-success" href="<%=url %>">확인</a></p>
 	<%} else{ %>
 		<p class="alert alert-danger">로그인 실패. 아이디나 비밀번호를 다시 확인해주세요.</p>
-		<p><a href="${pageContext.request.contextPath}/users/loginform.jsp?url=<%=encodedUrl %>">로그인 화면으로 돌아가기</a></p>
+		<p><a class="btn btn-danger" href="${pageContext.request.contextPath}/users/loginform.jsp?url=<%=encodedUrl %>">로그인 화면으로 돌아가기</a></p>
 	<%} %>
 </body>
 </html>

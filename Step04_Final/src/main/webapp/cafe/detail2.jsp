@@ -11,7 +11,7 @@
 	int viewCount = dto.getViewCount()+1;
 	String regdate = dto.getRegdate();
 	
-	CafeDao.getInstance().countUpdate(num,viewCount);
+	CafeDao.getInstance().addViewCount(num, viewCount);
 %>
 <!DOCTYPE html>
 <html>

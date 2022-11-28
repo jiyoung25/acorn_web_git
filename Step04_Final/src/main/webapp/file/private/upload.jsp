@@ -39,7 +39,12 @@
 	//4. 추가로 원본 파일명, 저장된 파일명, 파일 사이즈도 얻어내서 FileDto객체에 담아서
 	String orgFileName=mr.getOriginalFileName("myFile");
 	String saveFileName = mr.getFilesystemName("myFile");
-	long fileSize=mr.getFile("myFile").length();
+	long fileSize=0;
+	try{
+		fileSize=mr.getFile("myFile").length();
+	} catch(Exception e){
+		e.printStackTrace();
+	}
 	
 	//업로드된 파일의 정보를 FileDto에 담고
 	FileDto dto =new FileDto();
@@ -58,17 +63,39 @@
 <head>
 <meta charset="UTF-8">
 <title>/file/private/upload.jsp</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+	<style>
+		#profileImage{
+			width : 50px;
+			border-radius: 5px;
+		}
+		h3{
+			text-align:center;
+		}
+	</style>
 </head>
 <body>
+	<jsp:include page="/include/navbar2.jsp"></jsp:include>
 	<%if(isSuccess){%>
-		<p>
-		<%=writer %>님이 업로드한 <%=orgFileName %>파일을 저장했습니다.
-		<a href="${pageContext.request.contextPath}/file/list.jsp">목록보기</a>
-		</p>
-		<p><%=realPath %></p>
+		<div class="container">
+			<hr class="border border-warning border-4 opacity-50">
+			<h3>알림</h3>
+			<hr class="border border-warning border-4 opacity-50">
+			<p>
+			<strong><%=writer %></strong>님이 업로드한 <strong><%=orgFileName %></strong>파일을 저장했습니다.
+			</p>
+			<p><strong>파일 경로</strong>: <%=realPath %></p>
+			<a class="btn btn-warning" href="${pageContext.request.contextPath}/file/list_T.jsp">목록보기</a>
+		</div>
 	<%} else{%>
-		업로드 실패!
-		<a href="${pageContext.request.contextPath}/file/private/upload_form.jsp">다시 업로드 하기</a>
+		<div class="container">
+			<hr class="border border-warning border-4 opacity-50">
+			<h3>알림</h3>
+			<hr class="border border-warning border-4 opacity-50">
+			<p>업로드 실패!</p>
+			<a class="btn btn-warning" href="${pageContext.request.contextPath}/file/private/upload_form.jsp">다시 업로드 하기</a>
+		</div>
 	<%}%>
 
 </body>

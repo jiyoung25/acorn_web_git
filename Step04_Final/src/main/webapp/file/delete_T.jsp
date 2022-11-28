@@ -6,6 +6,7 @@
 <%
 	//1. 삭제할 파일의 번호를 읽어온다.
 	int num=Integer.parseInt(request.getParameter("num"));
+	System.out.println(request.getParameter("num"));
 	//2. 해당 파일의 정보를 DB에서 읽어온다.
 	FileDto dto = FileDao.getInstance().getData(num);
 	
@@ -26,7 +27,7 @@
 	FileDao.getInstance().delete(num);
 	//5. 응답하기
 	String cPath=request.getContextPath();
-	response.sendRedirect(cPath+"/file/list.jsp");
+	response.sendRedirect(cPath+"/file/list_T.jsp");
 %>
 <!DOCTYPE html>
 <html>

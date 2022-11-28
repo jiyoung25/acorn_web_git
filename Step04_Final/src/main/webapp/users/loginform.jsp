@@ -20,10 +20,22 @@
 <title>/users/loginform.jsp</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+	<style>
+		#profileImage{
+			width : 50px;
+			border-radius: 5px;
+		}
+		h1{
+			text-align:center;
+		}
+	</style>
 </head>
 <body>
+	<jsp:include page="/include/navbar.jsp"></jsp:include>
 	<div class="container">
+		<hr class="border border-info border-4 opacity-50">
 		<h1>로그인 폼</h1>
+		<hr class="border border-info border-4 opacity-50">
 		<form action="login.jsp" method="post">
 			<!-- 로그인 성공 후 어디로 갈지에 대한 정보를 url이라는 파라미터명으로 같이 전송되도록 한다. -->
 			<input type="hidden" name="url" value="<%=url %>" />
@@ -35,6 +47,7 @@
 				<label class="form-label" for="pwd">비밀번호</label>
 				<input class="form-control" type="password" name="pwd" id="pwd" />
 			</div>
+			<br>
 			<button class="btn btn-primary" type="submit">로그인</button>
 		</form>
 	</div>

@@ -5,26 +5,55 @@
 <head>
 <meta charset="UTF-8">
 <title>/cafe/private/insertform.jsp</title>
-<style>
-	textarea{
-		width : 768px;
-		height : 300px;
-	}
-</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+	<style>
+		textarea{
+			width : 768px;
+			height : 300px;
+		}
+		#profileImage{
+			width : 50px;
+			border-radius: 5px;
+		}
+		h3{
+			text-align:center;
+		}
+	</style>
 </head>
 <body>
+	<jsp:include page="/include/navbar2.jsp"></jsp:include>
 	<div class="container">
+		<hr class="border border-warning border-4 opacity-50">
 		<h3>새 글 작성 폼입니다.</h3>
+		<hr class="border border-warning border-4 opacity-50">
 		<form action="insert.jsp">
-			<div>
-				<label for="title">제목</label>
-				<input type="text" name = "title" id = "title" />
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon1">제목</span>
+				<input class="form-control" type="text" name = "title" id = "title" />
 			</div>
-			<div>
-				<label for="content">내용</label>
+			<div class="input-group mb-3"> <!-- 내용 -->
 				<textarea name="content" id="content"rows="10"></textarea>
 			</div>
-			<button type = "submit" onclick = " submitContents(this) ">저장</button>
+			<button class="btn btn-warning" type = "submit" onclick = " submitContents(this) ">
+				저장
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+ 		 			<path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+				</svg>
+			</button>
+			<button class="btn btn-warning" type="reset">
+				작성 내용 초기화
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+  					<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+  					<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+				</svg>
+			</button>
+			<button class="btn btn-warning" type="button" onclick = "location.href='${pageContext.request.contextPath}/cafe/list.jsp'">
+				뒤로가기
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+  					<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+				</svg>
+			</button>
 		</form>
 	</div>
 	
@@ -98,5 +127,6 @@
          oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
       }
    </script>
+   <jsp:include page="/include/footer.jsp"></jsp:include>
 </body>
 </html>
