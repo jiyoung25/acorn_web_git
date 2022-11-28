@@ -46,7 +46,9 @@
 	</style>
 </head>
 <body>
-	<jsp:include page="/include/navbar2.jsp"></jsp:include>
+	<jsp:include page="/include/navbar2.jsp">
+		<jsp:param value="member" name="thisPage"/>
+	</jsp:include>
 	<div class="container">
 		<div class="row">
 			<div class="col-2">

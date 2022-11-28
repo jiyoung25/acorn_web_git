@@ -67,9 +67,13 @@
 </head>
 <body>
 	<%if(id==null) {%>
-		<jsp:include page="/include/navbar.jsp"></jsp:include>
+		<jsp:include page="/include/navbar.jsp">
+			<jsp:param value="cafe" name="thisPage" />
+		</jsp:include>
 	<%} else{ %>
-		<jsp:include page="/include/navbar2.jsp"></jsp:include>
+		<jsp:include page="/include/navbar2.jsp">
+			<jsp:param value="cafe" name="thisPage" />
+		</jsp:include>
 	<%} %>
 	
 	<div class="container">

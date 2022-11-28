@@ -7,9 +7,13 @@
 	String thisPage=request.getParameter("thisPage");
 	String id = (String)session.getAttribute("id");
 	UsersDto dto = UsersDao.getInstance().getData(id);
+	
+	if(thisPage==null){
+		thisPage="index";
+	}
 	%>
     
-	<nav class="navbar navbar-expand-lg bg-light">
+	<nav class="navbar navbar-dark navbar-expand-lg bg-danger">
   		<div class="container-fluid">
     		<a class="navbar-brand nav-link active" aria-current="page" href="${pageContext.request.contextPath}"><strong>Final
     			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-binoculars" viewBox="0 0 16 16">
@@ -22,13 +26,13 @@
     		<div class="collapse navbar-collapse" id="navbarNavDropdown">
       			<ul class="navbar-nav">
         			<li class="nav-item">
-          				<a class="nav-link" href="${pageContext.request.contextPath}/file/list_T.jsp">자료실</a>
+          				<a class="nav-link <%=thisPage.equals("file")? "active":"" %>" href="${pageContext.request.contextPath}/file/list_T.jsp">자료실</a>
         			</li>
        				<li class="nav-item">
-          				<a class="nav-link" href="${pageContext.request.contextPath}/cafe/list.jsp">글 목록 보기</a>
+          				<a class="nav-link <%=thisPage.equals("cafe")? "active":"" %>" href="${pageContext.request.contextPath}/cafe/list.jsp">글 목록 보기</a>
   					</li>
         			<li class="nav-item dropdown">
-          				<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          				<a class="nav-link dropdown-toggle <%=thisPage.equals("member")? "active":"" %> " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             				회원 전용 공간
           				</a>
           				<ul class="dropdown-menu">
