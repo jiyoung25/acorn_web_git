@@ -107,7 +107,7 @@ public class UsersDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs=null;
 		
-		UsersDto dto = new UsersDto();
+		UsersDto dto = null;
 
 		try {
 			conn = new DbcpBean().getConn();
@@ -119,6 +119,7 @@ public class UsersDao {
 			
 			rs=pstmt.executeQuery();
 			if(rs.next()) {
+				dto = new UsersDto();
 				dto.setId(id);
 				dto.setPwd(rs.getString(1)); //rs.getString("pwd")도 가능
 				dto.setEmail(rs.getString(2));
