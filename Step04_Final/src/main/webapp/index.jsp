@@ -44,6 +44,10 @@
 		<hr class="border border-danger border-4 opacity-50">
 		<h1 class = "title">INDEX</h1>
 		<hr class="border border-danger border-4 opacity-50">
+		<div class="alert alert-success alert-dismissible fade show" >
+            <strong>안녕하세요.</strong> 로그인을 하면 더 많은 활동을 즐기실 수 있습니다.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" ></button>
+        </div>
 		<div id="carouselExampleCaptions" class="carousel slide box" data-bs-ride="false">
 			<div class="carousel-indicators">
 				<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
