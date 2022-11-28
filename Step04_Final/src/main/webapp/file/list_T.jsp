@@ -49,26 +49,51 @@
 <head>
 <meta charset="UTF-8">
 <title>/file/list.jsp</title>
+	<style>
+		#profileImage{
+			width : 50px;
+			border-radius: 5px;
+		}
+		.pagination{
+			justify-content: center;
+		}
+		h3{
+			text-align: center;
+		}
+	</style>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 </head>
 <body>
-   <div class="container-lg list">
-      <a href="${pageContext.request.contextPath}/file/private/upload_form.jsp">업로드 하기</a>
-      <h3>자료실 목록 보기</h3>
-      <table>
-         <thead>
-            <tr>
-               <th>번호</th>
-               <th>작성자</th>
-               <th>제목</th>
-               <th>파일명</th>
-               <th>크기</th>
-               <th>등록일</th>
-               <th>삭제</th>
-            </tr>
-         </thead>
+	<%if(id==null) {%>
+		<jsp:include page="/include/navbar.jsp"></jsp:include>
+	<%} else{ %>
+		<jsp:include page="/include/navbar2.jsp"></jsp:include>
+	<%} %>
+	
+   	<div class="container-lg list">
+      	<a class="btn btn-primary" href="${pageContext.request.contextPath}/file/private/upload_form.jsp">업로드 하기
+      		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
+ 				<path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828L10.646.646zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>
+				<path fill-rule="evenodd" d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086.086-.026z"/>
+			</svg>
+      	</a>
+      	<hr class="border border-warning border-4 opacity-50">
+      	<h3>자료실 목록 보기</h3>
+      	<hr class="border border-warning border-4 opacity-50">
+      	<table class = "table table-striped">
+         	<thead class = "table table-dark">
+            	<tr>
+               		<th>번호</th>
+               		<th>작성자</th>
+               		<th>제목</th>
+               		<th>파일명</th>
+               		<th>크기</th>
+               		<th>등록일</th>
+               		<th>삭제</th>
+           		</tr>
+         	</thead>
          <tbody>
             <%for(FileDto tmp:list){%>
                <tr>
@@ -76,7 +101,7 @@
                   <td><%=tmp.getWriter() %></td>
                   <td><%=tmp.getTitle() %></td>
                   <td>
-                     <a href="download.jsp?num=<%=tmp.getNum()%>"><%=tmp.getOrgFileName() %></a>
+                     <a class="btn btn-dark" href="download.jsp?num=<%=tmp.getNum()%>"><%=tmp.getOrgFileName() %></a>
                   </td>
                   <td><%=tmp.getFileSize() %></td>
                   <td><%=tmp.getRegdate() %></td>
@@ -93,7 +118,7 @@
 	</div>
 	<div class = "container-lg">
       <nav>
-      	<ul class="pagination">
+      	<ul class="pagination" >
       		<%if(startPageNum!=1){%>
       			<li class="page-item"><a class="page-link" href="list_T.jsp?pageNum=<%=startPageNum -1%>">PREVIOUS</a></li>
       		<%} %>
@@ -114,5 +139,6 @@
 			}
 		}
    </script>
+   <jsp:include page="/include/footer.jsp"></jsp:include>
 </body>
 </html>
