@@ -25,7 +25,7 @@
           				<a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}">INDEX</a>
         			</li>
         			<li class="nav-item">
-          				<a class="nav-link" href="${pageContext.request.contextPath}/file/list.jsp">자료실</a>
+          				<a class="nav-link" href="${pageContext.request.contextPath}/file/list_T.jsp">자료실</a>
         			</li>
        				<li class="nav-item">
           				<a class="nav-link" href="${pageContext.request.contextPath}/cafe/list.jsp">글 목록 보기</a>

@@ -60,7 +60,7 @@
       					</div>
       				</a>
     			</div>
-    			<a href = ${pageContext.request.contextPath}/file/list.jsp>
+    			<a href = ${pageContext.request.contextPath}/file/list_T.jsp>
     				<div class="carousel-item">
       					<img src="${pageContext.request.contextPath}/images/image.svg" class="d-block w-100" alt="image_list">
       					<div class="carousel-caption d-none d-md-block msg">
