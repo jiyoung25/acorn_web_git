@@ -126,7 +126,8 @@
 		//폼에 submit 이벤트가 일어났을 때 실행할 함수 등록
 		document.querySelector("#signupForm").addEventListener("submit",function(event){
 			//아래의 코드는 아이디, 비밀번호, 이메일 유효성 검증 결과를 고려해서 조건부로 실행되도록 해야 한다.
-			<%--
+			<%-- 일단 폼 전송부터 막아두고, class에 is-invalid가 있는지 일일이 확인하는 방법
+			event.preventDefault(); //폼 전송 막기
 			if(document.querySelector("#id").classList.value.includes("is-invalid")||
 					document.querySelector("#pwd").classList.value.includes("is-invalid")||
 					document.querySelector("#email").classList.value.includes("is-invalid")
@@ -136,6 +137,8 @@
 				this.submit();
 			}
 			--%>
+			
+			<%-- 위에서 true or false를 변수에 담아놓고 valid를 확인하는 방법 --%>
 			//폼 전체의 유효성 여부
 			const isFormValid = isEmailValid&&isIdValid&&isPwdValid;
 			console.log(isFormValid);
