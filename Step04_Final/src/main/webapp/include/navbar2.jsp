@@ -54,7 +54,7 @@
 								<img id="profileImage" 
                      				src="${pageContext.request.contextPath }<%=dto.getProfile()%>">
 							<%} %>
-            				<strong><%=id %></strong>님 어서오세요
+            				<strong>${sessionScope.id }</strong>님 어서오세요
           				</a>
           				<ul class="dropdown-menu">
             				<li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/private/info.jsp">개인 정보</a></li>
