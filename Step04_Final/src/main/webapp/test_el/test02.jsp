@@ -48,6 +48,7 @@
 	
 	<h1>EL 로 request scope 에 저장된 값 추출</h1>
 	<p>너의 이름은 <strong>${requestScope.yourName }</strong></p>
+	<%--영역 이름 생략 가능 --%>
 	<p>너의 이름은 <strong>${yourName }</strong></p>
 	<%-- 위의 EL 은 아래의 코드를 대신할수 있다. --%>
 	<%

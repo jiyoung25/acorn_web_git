@@ -23,14 +23,14 @@
 	<%-- greater than --%>
 	<p>10 &ge; 2 : ${10 >= 2 }</p>
 	<p>10 &ge; 2 : ${10 ge 2 }</p>
-	<%-- greater equal --%>
+	<%-- greater or equal --%>
 	
 	<p>10 &lt; 2 : ${10 < 2 }</p>
 	<p>10 &lt; 2 : ${10 lt 2 }</p>
 	<%-- least than --%>
 	<p>10 &le; 2 : ${10 <= 2 }</p>
 	<p>10 &le; 2 : ${10 le 2 }</p>
-	<%-- least equal --%>
+	<%-- least or equal --%>
 	
 	<p>10 == 10 : ${10 == 10 }</p>
 	<p>10 == 10 : ${10 eq 10 }</p>
@@ -39,7 +39,7 @@
 	<p>10 != 10 : ${10 ne 10 }</p>
 	<%-- not equal --%>
 	
-	<h2>논리연산</h2>
+	<h2>논리연산</h2> <%-- 기호 대신 or and not을 읽을 수 있다. --%>
 	<p> true || false : ${true || false }</p>
 	<p> true or false : ${true or false }</p>
 	<p> true && false : ${true && false }</p>
@@ -55,10 +55,12 @@
 	<p> not empty null : ${ not empty null }</p>
 	<p> not empty "" : ${ not empty "" }</p>
 	<p> not empty "e" : ${ not empty "e" }</p>
+	<p> not empty " " : ${ not empty " " }</p>
 	
 	<h3>3 항 연산</h3>
 	<p> ${ true ? 'coffee' : 'water' }</p>
 	<p> ${ false ? 'coffee' : 'water' }</p>
+	<p> ${ 10 gt 11 ? 'coffee' : 'water' }</p>
 </body>
 </html>
 
