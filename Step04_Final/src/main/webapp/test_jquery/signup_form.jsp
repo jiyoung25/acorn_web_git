@@ -7,7 +7,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <title>/users/signup_form.jsp</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="js/jquery-3.4.1.js"></script>
 	<style>
 		#profileImage{
 			width : 50px;
@@ -59,56 +59,106 @@
 			$(this).removeClass("is-invalid is-valid");
 			
 			$.ajax({
-				url:"checkId_practice.jsp?inputId="+inputId,
-				success: function(data){
+				url : "checkId.jsp?inputId="+inputId,
+				success : function(data){
+					console.log(data);
 					if(data.isExist){
-						isIdValid = false;
+						isIdValid=false;
 						$("#id").addClass("is-invalid");
 					} else{
-						isIdValid =true;
+						isIdValid=true;
 						$("#id").addClass("is-valid");
 					}
 				}
 			})
+			
+			/*
+			fetch("checkId.jsp?inputId="+inputId)
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				console.log(data);
+				if(data.isExist){
+					isIdValid=false;
+					$("#id").addClass("is-invalid");
+				} else{
+					isIdValid=true;
+					$("#id").addClass("is-valid");
+				}
+			})*/
 		})
 		
 		function checkPwd(){
-			$("#pwd").removeClass("is-invalid is-valid");
-			const inputPwd = $("#pwd").val();
-			const inputPwd2 = $("#pwd2").val();
+			$("#pwd").removeClass("is-valid is-invalid");
+			const pwd = $("#pwd").val();
+			console.log("pwd: "+pwd);
+			const pwd2 = $("#pwd2").val();
+			console.log("pwd2: "+pwd2);
 			
-			if(inputPwd!=inputPwd2){
-				isPwdValid=false;
+			if(pwd != pwd2){
 				$("#pwd").addClass("is-invalid");
+				isPwdValid=false;
 			} else{
-				isPwdValid=true;
 				$("#pwd").addClass("is-valid");
+				isPwdValid=true;
 			}
+				
 		}
 		
-		$("#pwd, #pwd2").on("input",function(){
+		//선택자 다중선택 가능
+		$("#pwd, #pwd2").on("input", function(){
 			checkPwd();
 		})
 		
 		$("#email").on("input",function(){
-			$(this).removeClass("is-valid is-invalid");
-			let reg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+			$(this).removeClass("is-valid").removeClass("is-invalid");
+			//$(this).removeClass("is-valid is-invalid"); <-도 가능하다. 스페이스로 클래스 구분 가능
+			const inputEmail = $(this).val();
 			
-			let isOk = reg.test($(this).val());
-			if(isOk){
-				isEmailValid=true;
-				$(this).addClass("is-valid");
-			} else{
-				isEmailValid=false;
+			const reg = /@/;
+			if(!reg.test(inputEmail)){
 				$(this).addClass("is-invalid");
+				isEmailValid = false;
+			} else{
+				$(this).addClass("is-valid");
+				isEmailValid = true;
 			}
 		})
 		
-		const isValid = isIdValid && isPwdValid && isEmailValid;
-		console.log("isValid: "+isValid);
-		$("#signupBtn")
+		$("#signupBtn").on("submit",function(){
+			const isFormValid = isIdValid && isPwdValid && isEmailValid;
+			if(!isFormValid){
+				return false; //(jquery에서 submit 이벤트 리스너 함수 안에서 폼의 전송을 막는 방법)
+			}
+		})
+		
 		
 		/*
+		document.querySelector("#id").addEventListener("input",function(){
+			
+			const self=this;
+			const inputId=self.value;
+			self.classList.remove("is-invalid");
+			self.classList.remove("is-valid");
+			
+			fetch("checkId_practice.jsp?inputId="+inputId)
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				console.log(data);
+				if(data.isExist){
+					isIdValid=false;
+					self.classList.add("is-invalid");
+				} else{
+					isIdValid=true;
+					self.classList.add("is-valid");
+				}
+			})
+			console.log("isIdValid:"+isIdValid);
+			
+		});
 		
 		function checkPwd(){
 			document.querySelector("#pwd").classList.remove("is-valid");
