@@ -62,14 +62,15 @@
 				url:"checkId_practice.jsp?inputId="+inputId,
 				success: function(data){
 					if(data.isExist){
-						isIdValid = false;
 						$("#id").addClass("is-invalid");
+						isIdValid = false;
 					} else{
-						isIdValid =true;
 						$("#id").addClass("is-valid");
+						isIdValid =true;
 					}
 				}
 			})
+			console.log("isIdValid: "+isIdValid);
 		})
 		
 		function checkPwd(){
@@ -84,6 +85,7 @@
 				isPwdValid=true;
 				$("#pwd").addClass("is-valid");
 			}
+			console.log("isPwdValid: "+isPwdValid);
 		}
 		
 		$("#pwd, #pwd2").on("input",function(){
@@ -102,11 +104,21 @@
 				isEmailValid=false;
 				$(this).addClass("is-invalid");
 			}
+			console.log("isEmailValid: "+isEmailValid);
 		})
 		
-		const isValid = isIdValid && isPwdValid && isEmailValid;
-		console.log("isValid: "+isValid);
-		$("#signupBtn")
+		$("#signupBtn").on("submit" , function(event){
+			
+			const isValid = isIdValid && isPwdValid && isEmailValid;
+			console.log("isValid: "+isValid);
+			
+			event.preventDefault();
+			if(isValid){
+				this.submit();
+			} else{
+				alert("회원가입 폼 양식에 맞게 입력해주세요.");
+			}
+		})
 		
 		/*
 		

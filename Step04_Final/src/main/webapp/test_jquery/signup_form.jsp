@@ -28,12 +28,14 @@
 			<div>
 				<label class="control-label" for="id">아이디</label>
 				<input class="form-control" type="text" name="id" id="id" />
+				<small class = "form-text text-muted">영문자 소문자로 시작하고 5-10글자 이내로 입력하세요.</small>
 				<div class="valid-feedback">이 아이디를 사용할 수 있습니다.</div>
 				<div class="invalid-feedback">이 아이디는 사용할 수 없습니다.</div>
 			</div>
 			<div>
 				<label class="control-label" for="pwd">비밀번호</label>
 				<input class="form-control" type="password" name="pwd" id="pwd" />
+				<small class = "form-text text-muted">특수문자를 하나 이상 조합하세요.</small>
 				<div class="invalid-feedback">비밀번호를 다시 확인해주세요.</div>
 			</div>
 			<div>
@@ -54,10 +56,38 @@
 		let isPwddValid = false;
 		let isEmailValid = false;
 		
+		
+		
 		$("#id").on("input", function(){
 			const inputId = $(this).val();
 			$(this).removeClass("is-invalid is-valid");
 			
+			//정규표현식을 통과하면 비동기식 응답을 받는 방법
+			const regId=/^[a-z].{4,9}$/;
+			const reg = new RegExp("^[a-z].{4,9}$"); //이렇게 해도 됨
+			const isMatch = regId.test(inputId);
+			if(!isMatch){
+				isIdValid = false;
+				$("#id").addClass("is-invalid");
+				return;
+			} else{
+				$.ajax({
+					url:"checkId.jsp?inputId="+inputId,
+					success: function(data){
+						console.log(data);
+						if(data.isExist){
+							isIdValid = false;
+							$("#id").addClass("is-invalid");
+						} else{
+							isIdValid = true;
+							$("#id").addClass("is-valid");
+						}
+					}
+				})
+			}
+			
+			
+			/* jquery로 비동기식 응답 받아온 후 id검증하는 방식
 			$.ajax({
 				url : "checkId.jsp?inputId="+inputId,
 				success : function(data){
@@ -66,13 +96,20 @@
 						isIdValid=false;
 						$("#id").addClass("is-invalid");
 					} else{
-						isIdValid=true;
-						$("#id").addClass("is-valid");
+						let regId=/^[a-z]{5,10}$/;
+						if(!regId.test(inputId)){
+							isIdValid=false;
+							$("#id").addClass("is-invalid");
+						} else{
+							isIdValid=true;
+							$("#id").addClass("is-valid");
+						}
 					}
 				}
-			})
-			
-			/*
+			})*/
+		})
+		
+		/* fetch then으로 비동기식 응답 받아오는 방식
 			fetch("checkId.jsp?inputId="+inputId)
 			.then(function(response){
 				return response.json();
@@ -87,7 +124,6 @@
 					$("#id").addClass("is-valid");
 				}
 			})*/
-		})
 		
 		function checkPwd(){
 			$("#pwd").removeClass("is-valid is-invalid");
@@ -96,14 +132,37 @@
 			const pwd2 = $("#pwd2").val();
 			console.log("pwd2: "+pwd2);
 			
+			//정규식 검증 후 비밀번호 비교
+			let regPwd = /[\W]/;
+			if(!regPwd.test(pwd)){
+				isPwdValid = false;
+				$("#pwd").addClass("is-invalid");
+				return;
+			} else{
+				if(pwd==pwd2){
+					isPwdValid = true;
+					$("#pwd").addClass("is-valid");
+				} else{
+					isPwdValid = false;
+					$("#pwd").addClass("is-invalid");
+				}
+			}
+			
+			/* 비밀번호 비교 후 정규식 검증
 			if(pwd != pwd2){
 				$("#pwd").addClass("is-invalid");
 				isPwdValid=false;
 			} else{
-				$("#pwd").addClass("is-valid");
-				isPwdValid=true;
+				let regPwd = /[\W]+/;
+				if(!regPwd.test(pwd)){
+					$("#pwd").addClass("is-invalid");
+					isPwdValid=false;
+				} else{
+					$("#pwd").addClass("is-valid");
+					isPwdValid=true;
+				}
 			}
-				
+			*/
 		}
 		
 		//선택자 다중선택 가능
@@ -116,7 +175,8 @@
 			//$(this).removeClass("is-valid is-invalid"); <-도 가능하다. 스페이스로 클래스 구분 가능
 			const inputEmail = $(this).val();
 			
-			const reg = /@/;
+			//let reg = /@/;
+			let reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 			if(!reg.test(inputEmail)){
 				$(this).addClass("is-invalid");
 				isEmailValid = false;
@@ -189,7 +249,7 @@
 			this.classList.remove("is-valid");
 			this.classList.remove("is-invalid");
 			
-			let reg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+			let reg = /^[\w]([-_\.]?[\w])*@[\w]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 			const inputEmail = document.querySelector("#email").value;
 			let isOk = reg.test(inputEmail);
 			
