@@ -21,6 +21,9 @@
         <label>
             큰 버튼 <input type="checkbox" v-model="isLg">
         </label>
+        <br />
+        <button class="btn"
+            v-bind:class="{'btn-primary':true, 'btn-lg':false}">true/false</button>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>

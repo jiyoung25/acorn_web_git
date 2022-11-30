@@ -15,9 +15,33 @@
         <button v-on:click="clicked">눌러보셈</button> 
         <p>{{msg}}</p>
     </div>
+    <div>
+    	<button onclick="clicked()">눌러보셈2</button>
+    	<p id = "one"></p>
+    </div>
+    <div>
+    	<button id="btn3">눌러보셈3</button>
+    	<p id="test"></p>
+    </div>
+    <script> //js로
+    	//msg라는 변수를 만들고 초기값
+    	let msg = "";
+    	document.querySelector("#one").innerText = msg;
+    	function clicked(){
+    		msg = "버튼을 눌렀네?";
+    		document.querySelector("#one").innerText = msg; //js는 이게 없으면 UI가 바뀌지 않지만, vue는 이게 없어도 자동반영된다.
+    	}
+    </script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script> // jquery로
+    	$("#btn3").on("click", function(){
+    		$("#test").text("버튼을 눌렀네?");
+    	})
+    </script>
     
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script>
+    <script>//vue.js로
         let app=new Vue({
             el:"#app",
             data:{

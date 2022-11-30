@@ -33,7 +33,7 @@
                 divClicked:function(e){
                     //클릭한 바로 그 div 의 innerText 를 "clicked!" 로 바꾸고 싶다면? 
                     console.log(e);
-                    // e.target 은 이벤트가 발생한 문서객체의 참조값이다.
+                    // e.target 은 이벤트가 발생한 문서객체의 참조값이다. (this는 안된다.)
                     e.target.innerText="clicked!";
                     e.target.style.backgroundColor="yellow";
                 }
