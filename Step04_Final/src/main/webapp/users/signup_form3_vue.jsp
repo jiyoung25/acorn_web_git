@@ -20,53 +20,74 @@
 </head>
 <body>
 	<jsp:include page="/include/navbar.jsp"></jsp:include>
-	<div id="loginForm" class="container">
+	<div class="container">
 		<hr class="border border-info border-4 opacity-50">
 		<h3>회원가입 폼입니다.</h3>
 		<hr class="border border-info border-4 opacity-50">
-		<form action="signup.jsp" mehthod="post" id="signupForm">
-			<div>
+		<form action="signup.jsp" mehthod="post" id="signupForm" v-on:submit="onSubmit">
+			<p>폼의 유효성 여부: {{isFormValid}}</p>
+			<div class="mb-2">
 				<label class="control-label" for="id">아이디</label>
-				<input class="form-control" v-bind:class="[isIdValid? 'is-valid': 'is-invalid']" v-on:input="inputId" type="text" name="id" id="id" />
+				<input class="form-control" v-bind:class="{'is-valid':isIdValid, 'is-invalid':!isIdValid && isIdDirty}" v-on:input="inputId" type="text" name="id" id="id" />
 				<small class = "form-text text-muted">영문자 소문자로 시작하고 5-10글자 이내로 입력하세요.</small>
 				<div class="valid-feedback">이 아이디를 사용할 수 있습니다.</div>
 				<div class="invalid-feedback">이 아이디는 사용할 수 없습니다.</div>
 			</div>
-			<div>
+			<div class="mb-2">
 				<label class="control-label" for="pwd">비밀번호</label>
-				<input class="form-control" v-bind:class="[isPwdValid? 'is-valid': 'is-invalid']" v-on:input="inputPwd" type="password" name="pwd" id="pwd" />
+				<input class="form-control" v-bind:class="{'is-valid':isPwdValid, 'is-invalid':!isPwdValid && isPwdDirty}" v-model="pwd" v-on:input="inputPwd" type="password" name="pwd" id="pwd" />
 				<small class = "form-text text-muted">특수문자를 하나 이상 조합하세요.</small>
 				<div class="invalid-feedback">비밀번호를 다시 확인해주세요.</div>
 			</div>
-			<div>
+			<div class="mb-2">
 				<label class="control-label" for="pwd2">비밀번호 확인</label>
-				<input class="form-control" v-bind:class="[isEmailValid? 'is-valid': 'is-invalid']" v-on:input="inputEmail" type="password" name="pwd2" id="pwd2" />
+				<input class="form-control" type="password" v-model="pwd2" v-on:input="inputPwd" name="pwd2" id="pwd2" />
 			</div>
-			<div>
+			<div class="mb-2">
 				<label class="control-label" for="email">이메일</label>
-				<input class="form-control" type="text" name="email" id="email" />
+				<input class="form-control" v-model ="email" v-bind:class="{'is-valid':isEmailValid, 'is-invalid':!isEmailValid && isEmailDirty}" v-on:input="inputEmail" type="text" name="email" id="email" />
 				<div class="invalid-feedback">이메일 양식을 맞춰주세요.</div>
 			</div>
-			<button id="signupBtn" class="btn btn-outline-primary" type="submit">가입</button>
+			<button id="signupBtn" class="btn btn-primary" type="submit" v-bind:disabled="!isFormValid">가입</button>
 		</form>
 	</div>
 	<script>
-	new Vue({
-		el: "#loginForm",
+	let app = new Vue({
+		el: "#signupForm",
 		data:{
 			isIdValid: false,
 			isPwdValid: false,
-			isEmailValid: false
+			isEmailValid: false,
+			pwd:"",
+			pwd2: "",
+			email: "",
+			isIdDirty:false,
+			isPwdDirty:false,
+			isEmailDirty:false
+		},
+		
+		//컴퓨티드는 함수에서 리턴된 값이 바로 모델 역할을 하는 것이나 다름이 없다.
+		computed:{
+			//data에 isFormValid를 키값으로 하는 object를 만들지 않아도 된다.
+			isFormValid(){
+				//모델을 활용해서 얻어낼 값이 있으면 얻어낸다.
+				let result = this.isIdValid && this.isPwdValid && this.isEmailValid;
+				//함수에서 리턴해주는 값을 모델처럼 사용하면 된다.
+				return result;
+			}
 		},
 		methods:{
 			inputId(e){
+				const self = this; //자신의 참조값 담기
+				//아이디를 한번이라도 입력하면
+				self.isIdDirty = true;
 				const inputId = e.target.value;
 				console.log("inputId:"+inputId);
 				const regId = new RegExp("^[a-z].{4,9}$");
 				const isMatch = regId.test(inputId);
 				if(!isMatch){
-					isIdValid=false;
-					return;
+					return this.isIdValid = false;
+					console.log("isIdValid: "+isIdValid);
 				} else{
 					fetch("checkId.jsp?inputId="+inputId)
 					.then(function(response){
@@ -74,21 +95,87 @@
 					})
 					.then(function(data){
 						if(data.isExist){
-							isIdValid=false;
+							//여기서의 this는 fetch를 가리킨다.
+							//1. 그러므로 inputId의 참조값을 담아둔 변수를 이용해야 한다.
+							// --> self.isIdValid = false;
+							//2. vue객체를 담아둔 변수를 이용해도 된다.
+							//app.isIdValid = false;
+							self.isIdValid = false;
+							console.log("isIdValid: "+app.isIdValid);
 						} else{
-							isIdValid=true;
+							self.isIdValid = true;
+							console.log("isIdValid: "+app.isIdValid);
 						}
 					})
 				}
 			},
 			inputPwd(){
+				app.isPwdDirty = true;
+				let pwd = this.pwd;
+				console.log("pwd: "+pwd);
+				let pwd2 = this.pwd2;
+				console.log("pwd2: "+pwd2);
+				let regPwd = /[\W]/;
+				if(!regPwd.test(pwd)||!regPwd.test(pwd2)){
+					return this.isPwdValid = false;
+					console.log("isPwdValid: "+this.isPwdValid);
+				} else{
+					if(pwd!=pwd2){
+						this.isPwdValid = false;
+						console.log("isPwdValid: "+this.isPwdValid);
+					} else{
+						this.isPwdValid = true;
+						console.log("isPwdValid: "+this.isPwdValid);
+					}
+				}
 				
 			},
-			inputEmail(){
-				
+			inputEmail(e){
+				app.isEmailDirty = true;
+				//let inputEmail = e.target.value;
+				let inputEmail = this.email;
+				console.log(inputEmail);
+				let isEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				let isHan = /[ㄱ-ㅎ가-힣]/g;
+		        if (!isEmail.test(inputEmail) || isHan.test(inputEmail)) {
+		        	this.isEmailValid = false;
+		        	console.log("isEmailValid: "+this.isEmailValid);
+				} else{
+					this.isEmailValid = true;
+					console.log("isEmailValid: "+this.isEmailValid);
+				}
+			},
+			
+			/* 폼 제출 막기 방법1. button요소의  속성으로 v-on:click = "submitForm" 해서 처리하기
+			submitForm(e){
+				let isFormValid = this.isIdValid && this.isPwdValid && this.isEmailValid;
+				if(!isFormValid){
+					e.preventDefault();
+					alert("폼 양식을 다시 확인해주세요.");
+				} else{
+					e.submit();
+				}
+			}
+			*/
+			/* 폼 제출 막기 방법2. form에 v-on:submit
+			onSubmit(e){
+				console.log("submitIdValid: "+this.isIdValid+", submitPwdValid: "+this.isPwdValid+", submitEmailValid: "+this.isEmailValid)
+				let isFormValid = isIdValid && this.isPwdValid && this.isEmailValid;
+				if(!isFormValid){
+					e.preventDefault();
+					alert("폼 양식을 다시 확인해주세요.");
+				} else{
+					e.submit();
+				}
+			}*/
+			
+			/*폼 제출 막기 방법3. form에 v-on:submit + computed추가 ( true false값 자동반영)*/
+			onSubmit(){
+				if(!this.isFormValid){
+					e.preventDefault();
+				}
 			}
 		}
-		
 	})
 	/*
 	//융합 여부를 지정할 변수를 만들고 초기값 대입
