@@ -29,7 +29,7 @@
         let app=new Vue({
             el:"#app",
             data:{
-            	msg:""
+            	msg:"",
             },
             components:{
                 "my-component":{
@@ -37,7 +37,7 @@
                 },
                 "your-component":{
                     template:"<div class='box'>{{greet}}</div>",
-                    props:["greet"]
+                    props:["greet"] // props는 property의 약어
                 }
             }
         });

@@ -12,6 +12,7 @@
         <fortune-component v-bind:fortune="'동쪽으로 가면 귀인을 만나요'"></fortune-component>
         <fortune-component v-bind:fortune="fortune"></fortune-component>
         <input type="text" v-model="fortune" >
+        <!-- 모델의 값이 바뀌면 자식 component가 사용하는 data의 값도 변경된다  -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
