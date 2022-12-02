@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import test.users.dto.UsersDto;
 import test.util.DbcpBean;
 
@@ -28,18 +30,19 @@ public class UsersDao {
 
 		try {
 			conn = new DbcpBean().getConn();
-			String sql = "INSERT INTO users"
-					+ " (id, pwd, email, regdate)"
-					+ " VALUES(?, ?, ?, SYSDATE)";
+			String sql = "INSERT INTO users2"
+					+ " (id, nickname, pwd, email, regdate)"
+					+ " VALUES(?, ?, ?, ?, SYSDATE)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getId());
-			pstmt.setString(2, dto.getPwd());
-			pstmt.setString(3, dto.getEmail());
+			pstmt.setString(2, dto.getNickname());
+			pstmt.setString(3, dto.getPwd());
+			pstmt.setString(4, dto.getEmail());
 			rowCount = pstmt.executeUpdate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("insert 성공");
+			System.out.println("insert 실패");
 		} finally {
 			try {
 				if (pstmt != null)
@@ -53,7 +56,7 @@ public class UsersDao {
 
 		return rowCount >0 ? true : false;
 	}
-public UsersDto getData(String id) {
+	public UsersDto getData(String id) {
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -63,8 +66,8 @@ public UsersDto getData(String id) {
 
 		try {
 			conn = new DbcpBean().getConn();
-			String sql = "SELECT pwd, email, profile, TO_CHAR(regdate, 'YYYY.MM.DD') AS regdate"
-					+ " FROM users"
+			String sql = "SELECT nickname ,pwd, email, profile, TO_CHAR(regdate, 'YYYY.MM.DD') AS regdate"
+					+ " FROM users2"
 					+ " WHERE id=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -73,10 +76,11 @@ public UsersDto getData(String id) {
 			if(rs.next()) {
 				dto = new UsersDto();
 				dto.setId(id);
-				dto.setPwd(rs.getString(1)); //rs.getString("pwd")도 가능
-				dto.setEmail(rs.getString(2));
-				dto.setProfile(rs.getString(3));
-				dto.setRegdate(rs.getString(4));
+				dto.setNickname(rs.getString(1));
+				dto.setPwd(rs.getString(2)); //rs.getString("pwd")도 가능
+				dto.setEmail(rs.getString(3));
+				dto.setProfile(rs.getString(4));
+				dto.setRegdate(rs.getString(5));
 			}
 
 		} catch (Exception e) {
@@ -91,9 +95,110 @@ public UsersDto getData(String id) {
 					conn.close();
 			} catch (Exception e) {
 				e.printStackTrace();
+				System.out.print("getData 실패");
 			}
 		}
 
 		return dto;
+	}
+
+	public boolean checkNick(String nickname) {
+		boolean isExist = false;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "SELECT rownum"
+					+ " FROM users2"
+					+ " WHERE nickname= ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, nickname);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				isExist = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("chekNick실패");
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return isExist;
+	}
+	
+	public boolean isValid(String id) {
+		boolean isExist = false;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "SELECT rownum"
+					+ " FROM users2"
+					+ " WHERE id= ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				isExist = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("isValid 실패");
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return isExist;
+	}
+	
+	public boolean updatePwd(String pwd, String id) {
+		int rowCount = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "Update users2"
+					+ " SET pwd = ?"
+					+ " WHERE id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pwd);
+			pstmt.setString(2, id);
+			rowCount = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("updatePwd 실패");
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rowCount > 0 ? true : false;
 	}
 }

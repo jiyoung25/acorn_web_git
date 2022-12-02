@@ -13,7 +13,6 @@ public class DbcpBean {
 			Context initContext = new InitialContext();
 			Context envContext  = (Context)initContext.lookup("java:/comp/env");
 			DataSource ds = (DataSource)envContext.lookup("jdbc/myoracle");
-			Connection conn = ds.getConnection();
 			conn = ds.getConnection();
 			System.out.println("Connection 얻어오기 성공");
 			} catch(Exception e) {

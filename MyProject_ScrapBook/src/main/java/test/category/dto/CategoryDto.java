@@ -4,18 +4,20 @@ public class CategoryDto {
 	private int num;
 	private String tab_name;
 	private String tab_sub;
+	private int roomsize;
 	
 	public CategoryDto() {
 		
 	}
 	
-	public CategoryDto(int num, String tab_name, String tab_sub) {
+	public CategoryDto(int num, String tab_name, String tab_sub, int roomsize) {
 		super();
 		this.num = num;
 		this.tab_name = tab_name;
 		this.tab_sub = tab_sub;
+		this.roomsize = roomsize;
 	}
-	
+
 	public int getNum() {
 		return num;
 	}
@@ -34,5 +36,10 @@ public class CategoryDto {
 	public void setTab_sub(String tab_sub) {
 		this.tab_sub = tab_sub;
 	}
-
+	public int getRoomsize() {
+		return roomsize;
+	}
+	public void setRoomsize(int roomsize) {
+		this.roomsize = roomsize;
+	}
 }

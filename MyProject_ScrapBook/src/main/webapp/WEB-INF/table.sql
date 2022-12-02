@@ -12,9 +12,7 @@ CREATE TABLE users2(
 CREATE TABLE board_file(
    num NUMBER PRIMARY KEY,
    writer VARCHAR2(100) NOT NULL, -- nickname
-   category VARCHAR2(100) NOT NULL, --board_category -> tab_name
    title VARCHAR2(100) NOT NULL,
-   file_comment VARCHAR2(1000),
    orgFileName VARCHAR2(100) NOT NULL, -- 원본 파일명
    saveFileName VARCHAR2(100) NOT NULL, -- 서버에 실제로 저장된 파일명
    fileSize NUMBER NOT NULL, -- 파일의 크기 
@@ -26,5 +24,6 @@ CREATE SEQUENCE board_file_seq;
 CREATE TABLE board_category(
    num NUMBER NOT NULL,
    tab_name VARCHAR2(100) NOT NULL,
-   tab_sub VARCHAR2(100)
+   tab_sub VARCHAR2(100),
+   roomsize NUMBER
 );
