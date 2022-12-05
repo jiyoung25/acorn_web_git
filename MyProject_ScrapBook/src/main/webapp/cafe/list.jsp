@@ -1,3 +1,6 @@
+<%@page import="test.category.dto.CategoryDto"%>
+<%@page import="java.net.URLEncoder"%>
+<%@page import="test.category.dao.CategoryDao"%>
 <%@page import="test.cafe.dao.CafeDao"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -42,12 +45,27 @@
 	CafeDto dto = new CafeDto();
 	dto.setStartRowNum(startRowNum);
 	dto.setEndRowNum(endRowNum);
-
-	List<CafeDto> list = CafeDao.getInstance().getRowList(dto);
+	
+	List<CafeDto> list = null;
+	List<CategoryDto> list1 = CategoryDao.getInstance().getData(1);
+	List<CategoryDto> list2 = CategoryDao.getInstance().getData(2);
+	List<CategoryDto> list3 = CategoryDao.getInstance().getData(3);
 	
 	String category = request.getParameter("category");
-	System.out.println(category);
+	if(category.equals("all")){
+		list = CafeDao.getInstance().getRowList(dto);
+	} else if(category.equals("dwell")){
+		list = CafeDao.getInstance().getRowList(dto, 1);
+	} else if(category.equals("space")){
+		list = CafeDao.getInstance().getRowList(dto, 2);
+	} else if(category.equals("atmosphere")){
+		list = CafeDao.getInstance().getRowList(dto, 3);
+	} else{
+		list = CafeDao.getInstance().getRowList(dto, category);
+	}
+	
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,10 +79,22 @@
 	<div class="container">
 		<a href="${pageContext.request.contextPath}/cafe/private/insertform.jsp">새 글 작성</a>
 		<h3>카페 글 목록입니다.</h3>
+		<%if(category.equals("all")){%>
+			<select name="category" id="category">
+				<%for(int i=0; i<list1.size();i++){ %>
+					<otpgroup label="<%=list1.get(i).getTab_name() %>">
+						<%for(CategoryDto tmp:list1){%>
+							<option value="<%=tmp.getNum() %>"><%=tmp.getTab_sub() %></option>
+						<%} %>
+					</otpgroup>
+				<%} %>
+			</select>
+		<%} %>
 		<table class = "table table-striped">
 			<thead class = "table-dark">
 				<tr>
 					<th>글 번호</th>
+					<th>카테고리</th>
 					<th>작성자</th>
 					<th>제목</th>
 					<th>조회수</th>
@@ -75,8 +105,9 @@
 				<%for(CafeDto tmp:list){ %>
 					<tr>
 						<td><%=tmp.getNum() %></td>
+						<td><%=CategoryDao.getInstance().getData((tmp.getCategory())).getTab_name() %> > <%=CategoryDao.getInstance().getData((tmp.getCategory())).getTab_sub() %> </td>
 						<td><%=tmp.getWriter() %></td>
-						<td><a href = "${pageContext.request.contextPath}/cafe/detail.jsp?num=<%=tmp.getNum() %>"><%=tmp.getTitle() %></a></td>
+						<td><a href = "${pageContext.request.contextPath}/cafe/detail.jsp?num=<%=tmp.getNum() %>&category=<%=category%>"><%=tmp.getTitle() %></a></td>
 						<td><%=tmp.getViewCount() %></td>
 						<td><%=tmp.getRegdate() %></td>
 					</tr>
@@ -90,7 +121,7 @@
       					<li class="page-item"><a class="page-link" href="list.jsp?pageNum=<%=startPageNum -1%>">PREVIOUS</a></li>
       				<%} %>
       				<%for(int i=startPageNum; i<=endPageNum; i++){%>
-      					<li class="page-item"><a class="page-link <%=pageNum == i? "active":"" %>" href="list.jsp?pageNum=<%=i%>"><%=i %></a></li>
+      					<li class="page-item"><a class="page-link <%=pageNum == i? "active":"" %>" href="list.jsp?pageNum=<%=i%>&category=<%=category%>"><%=i %></a></li>
       				<%}%>
       				<%if(endPageNum<totalPageCount){ %>
       					<li class="page-item"><a class="page-link" href="list.jsp?pageNum=<%=endPageNum +1%>">NEXT</a></li>

@@ -4,7 +4,11 @@
     pageEncoding="UTF-8"%>
 <%
 	String id = (String)session.getAttribute("id");
-	String nickname = UsersDao.getInstance().getData(id).getNickname();
+	
+	String nickname=null;
+	if(id!=null){
+		nickname = UsersDao.getInstance().getData(id).getNickname();
+	}
 %>
 <!DOCTYPE html>
 <html>

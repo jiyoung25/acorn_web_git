@@ -75,6 +75,67 @@ public class CafeDao {
 		return list;
 	}
 	
+	//카테고리 소분류별 numbering
+	public List<CafeDto> getRowList(CafeDto dto, String category) {
+		List<CafeDto> list = new ArrayList<>();
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			
+			String sql = "SELECT *"
+					+" FROM"
+					+" (SELECT result1.*, ROWNUM AS rnum"
+					+" FROM"
+					+"	(SELECT f.num, f.writer, f.title, f.viewCount, TO_CHAR(f.regdate, 'YYYY.MM.DD') AS regdate, f.category"
+					+"	FROM board_cafe2 f, board_category t"
+					+"	WHERE f.category=t.num AND t.bignum=(SELECT bignum"
+					+"					FROM board_category"
+					+"					WHERE num = ?)"
+					+"	ORDER BY num DESC) result1)"
+					+" WHERE rnum BETWEEN ? AND ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, category);
+			pstmt.setInt(2, dto.getStartRowNum());
+			pstmt.setInt(3, dto.getEndRowNum());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				dto = new CafeDto();
+				
+				dto.setNum(rs.getInt(1));
+				dto.setWriter(rs.getString(2));
+				dto.setTitle(rs.getString(3));
+				dto.setViewCount(rs.getInt(4));
+				dto.setRegdate(rs.getString(5));
+				dto.setCategory(rs.getString(6));
+				
+				list.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("오류가 생겨 리스트를 불러올 수 없습니다.");
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close(); //Connection Pool에 Connection반납하기
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return list;
+	}
+	
+	//전체목록 numbering
 	public List<CafeDto> getRowList(CafeDto dto) {
 		List<CafeDto> list = new ArrayList<>();
 
@@ -86,13 +147,13 @@ public class CafeDao {
 			conn = new DbcpBean().getConn();
 			
 			String sql = "SELECT *"
-					+ " FROM"
-					+ " 	(SELECT result1.*, ROWNUM AS rnum"
-					+ " 	FROM"
-					+ "			(SELECT num, writer, title, viewCount, TO_CHAR(regdate, 'YYYY.MM.DD') AS regdate"
-					+ "			FROM board_cafe2"
-					+ "			ORDER BY num DESC) result1)"
-					+ " WHERE rnum BETWEEN ? AND ?";
+					+" FROM"
+					+" (SELECT result1.*, ROWNUM AS rnum"
+					+" FROM"
+					+"	(SELECT f.num, f.writer, f.title, f.viewCount, TO_CHAR(f.regdate, 'YYYY.MM.DD') AS regdate"
+					+"	FROM board_cafe2 f, board_category t"
+					+"	WHERE f.category=t.num) result1)"
+					+" WHERE rnum BETWEEN ? AND ?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, dto.getStartRowNum());
@@ -106,6 +167,64 @@ public class CafeDao {
 				dto.setTitle(rs.getString(3));
 				dto.setViewCount(rs.getInt(4));
 				dto.setRegdate(rs.getString(5));
+				
+				list.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("오류가 생겨 리스트를 불러올 수 없습니다.");
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close(); //Connection Pool에 Connection반납하기
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return list;
+	}
+	
+	//bignum 으로 페이지 넘버링
+	public List<CafeDto> getRowList(CafeDto dto, int num) {
+		List<CafeDto> list = new ArrayList<>();
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			
+			String sql = "SELECT *"
+					+" FROM"
+					+" (SELECT result1.*, ROWNUM AS rnum"
+					+" FROM"
+					+"	(SELECT f.num, f.writer, f.title, f.viewCount, TO_CHAR(f.regdate, 'YYYY.MM.DD') AS regdate, f.category"
+					+"	FROM board_cafe2 f, board_category t"
+					+"	WHERE f.category=t.num AND t.bignum= ? "
+					+"	ORDER BY num DESC) result1)"
+					+" WHERE rnum BETWEEN ? AND ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.setInt(2, dto.getStartRowNum());
+			pstmt.setInt(3, dto.getEndRowNum());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				dto = new CafeDto();
+				
+				dto.setNum(rs.getInt(1));
+				dto.setWriter(rs.getString(2));
+				dto.setTitle(rs.getString(3));
+				dto.setViewCount(rs.getInt(4));
+				dto.setRegdate(rs.getString(5));
+				dto.setCategory(rs.getString(6));
 				
 				list.add(dto);
 			}

@@ -7,7 +7,6 @@
 	String title = request.getParameter("title");
 	String content = request.getParameter("content");
 	String category = request.getParameter("category");
-	System.out.println(category);
 	
 	CafeDto dto = new CafeDto();
 	dto.setWriter(id);
@@ -27,7 +26,7 @@
 	<%if(isSuccess){%>
 		<script>
 			alert("새 글이 작성되었습니다.");
-			location.href="${pageContext.request.contextPath}/cafe/list.jsp"	
+			location.href="${pageContext.request.contextPath}/cafe/list.jsp?category=<%=category %>"	
 		</script>
 	<%} else{%>
 		<script>

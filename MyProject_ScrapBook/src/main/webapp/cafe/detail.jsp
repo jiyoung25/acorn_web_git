@@ -16,9 +16,9 @@
 	
 	CafeDao.getInstance().addViewCount(num,viewCount);
 	
-	String category = dto.getCategory();
-	String categoryName = CategoryDao.getInstance().getData(category).getTab_name();
-	String categorySub = CategoryDao.getInstance().getData(category).getTab_sub();
+	String category = request.getParameter("category");
+	String categoryName = CategoryDao.getInstance().getData(dto.getCategory()).getTab_name();
+	String categorySub = CategoryDao.getInstance().getData(dto.getCategory()).getTab_sub();
 %>
 <!DOCTYPE html>
 <html>
@@ -31,6 +31,13 @@
 <body>
 	<div class="container">
 		<h3>글 상세보기</h3>
+		<%if(category.equals("dwell")){ %>
+			<select name="category" id="category">
+				<optgroup>
+					<%for(CategoryDto tmp:CategoryDao.getInstance().g) %>
+				</optgroup>
+			</select>
+		}
 		<table>
 			<tr>
 				<th>글 번호</th>
