@@ -201,4 +201,38 @@ public class UsersDao {
 
 		return rowCount > 0 ? true : false;
 	}
+	
+	public boolean update(UsersDto dto) {
+		
+		int rowCount = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "UPDATE users2"
+					+ " SET nickname=?, email=?, profile=?"
+					+ " WHERE id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getNickname());
+			pstmt.setString(2, dto.getEmail());
+			pstmt.setString(3, dto.getProfile());
+			pstmt.setString(4, dto.getId());
+			rowCount = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rowCount == 0 ? false : true;
+	}
 }

@@ -4,14 +4,6 @@
     pageEncoding="UTF-8"%>
     <%
     	String id = (String)session.getAttribute("id");
-    	String paramId = request.getParameter("id");
-    	if(!id.equals(paramId)||paramId==null){ %>
-    		<script>
-    			alert("제대로 된 경로로 접근해주세요.");
-    			location.href="${pageContext.request.contextPath}";
-    		</script>
-    <%		return;
-    	}
     	UsersDto dto = UsersDao.getInstance().getData(id);
     	System.out.println(dto.getNickname());
     %>
@@ -20,6 +12,14 @@
 <head>
 <meta charset="UTF-8">
 <title>/users/private/info.jsp</title>
+<style>
+   #profileImage{
+      width: 100px;
+      height: 100px;
+      border: 1px solid #cecece;
+      border-radius: 50%;
+   }
+</style>
 </head>
 <body>
 	<div class="container">
@@ -33,9 +33,9 @@
   								<path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
   								<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
 							</svg>
-						<%} else{
-							dto.getProfile();
-						} %>
+						<%} else{%>
+							<img id="profileImage" src="${pageContext.request.contextPath}<%=dto.getProfile() %>" alt="" />
+						<%} %>
 					</td>
 				</tr>
 				<tr>
@@ -64,8 +64,8 @@
 				</tr>
 			</table>
 		</div>
-		<button onclick="location.href='${pageContext.request.contextPath}/users/private/updatePwdForm.jsp?id=<%=id%>'">비밀번호 변경하기</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/users/private/updateform.jsp?id=<%=id%>'">개인정보 수정하기</button>
+		<button onclick="location.href='${pageContext.request.contextPath}/users/private/updatePwdForm.jsp'">비밀번호 변경하기</button>
+		<button onclick="location.href='${pageContext.request.contextPath}/users/private/updateform.jsp'">개인정보 수정하기</button>
 	</div>
 </body>
 </html>

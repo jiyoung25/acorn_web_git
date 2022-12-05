@@ -3,14 +3,6 @@
     pageEncoding="UTF-8"%>
 <%
 	String id = (String)session.getAttribute("id");
-	String paramId = request.getParameter("id");
-	if(!id.equals(paramId)||paramId==null){ %>
-		<script>
-			alert("제대로 된 경로로 접근해주세요.");
-			location.href="${pageContext.request.contextPath}";
-		</script>
-	<%		return;
-	}
 	String currentPwd = UsersDao.getInstance().getData(id).getPwd();
 %>
 <!DOCTYPE html>
@@ -23,7 +15,7 @@
 <body>
 	<div class="container">
 		<h3>비밀번호 변경</h3>
-		<form id="updatePwd" v-on:submit="onUpdatePwd">
+		<form action="updatePwd.jsp?id=<%=id %>" id="updatePwd" v-on:submit="onUpdatePwd">
 			<div>
 				<label for="currentPwd">현재 비밀번호</label>
 				<input id="currentPwd" type="password" v-model="currentPwd" v-bind:class="{'is-invalid' : !currentCheck, 'is-valid' : currentCheck}" v-bind:disabled="!currentCheck" />
@@ -66,20 +58,6 @@
 						if(!regPwd.test(pwd)){
 							e.preventDefault();
 							alert("특수문자를 하나 이상 입력해주세요.");
-						} else{
-							fetch("updatePwd.jsp")
-							.then(function(response){
-								return response.json();
-							})
-							.then(function(data){
-								if(data.isSuccess){
-									alert("비밀번호 변경에 성공했습니다.");
-									location.href = "info.jsp";
-								} else{
-									alert("비밀번호 변경에 실패했습니다.\n다시 시도해주세요.");
-									location.href = "updatePwdForm.jsp?id="+id;
-								}
-							})
 						}
 					}
 				}

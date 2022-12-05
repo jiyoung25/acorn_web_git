@@ -19,15 +19,16 @@
 		<a href="${pageContext.request.contextPath}/users/signupform.jsp">회원가입</a>
 		<a href="${pageContext.request.contextPath}/users/loginform.jsp">로그인</a>
 	<%} else{ %>
-		<a href="${pageContext.request.contextPath}/users/private/info.jsp?id=<%=id %>"><%=nickname %>님 어서오세요.</a>
+		<a href="${pageContext.request.contextPath}/users/private/info.jsp"><%=nickname %>님 어서오세요.</a>
 		<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
 	<%} %>
 	<h1>스크랩북</h1>
+	<a href="${pageContext.request.contextPath}/cafe/private/insertform.jsp?category=all">글쓰기</a>
 	<ul>
-		<li>주거 형태</li>
-		<li>방의 종류</li>
-		<li>포인트별</li>
-		<li>분위기</li>
+		<li><a href="${pageContext.request.contextPath}/cafe/list.jsp?category=all">전체 게시글</a></li>
+		<li><a href="${pageContext.request.contextPath}/cafe/list.jsp?category=dwell">주거 형태</a></li>
+		<li><a href="${pageContext.request.contextPath}/cafe/list.jsp?category=space">방의 종류</a></li>
+		<li><a href="${pageContext.request.contextPath}/cafe/list.jsp?category=atmosphere">분위기</a></li>
 	</ul>
 </body>
 </html>

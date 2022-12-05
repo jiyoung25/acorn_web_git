@@ -75,7 +75,7 @@
 		 	프로필 사진
 		 	<input type="file" id="image" name = "image" accept =".jpg, .png, .gif" />
 		 	<button type="submit">업로드</button>
-		 </form>
+		</form>
 	</div>
 	<!-- gura_util.js 로딩 -->
    	<script src="${pageContext.request.contextPath }/js/gura_util.js"></script>

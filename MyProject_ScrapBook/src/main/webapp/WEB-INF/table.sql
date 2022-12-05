@@ -9,7 +9,7 @@ CREATE TABLE users2(
 );
 
 -- 업로드된 파일의 정보를 저장할 테이블
-CREATE TABLE board_file(
+CREATE TABLE board_file2(
    num NUMBER PRIMARY KEY,
    writer VARCHAR2(100) NOT NULL, -- nickname
    title VARCHAR2(100) NOT NULL,
@@ -19,11 +19,26 @@ CREATE TABLE board_file(
    regdate DATE
 );
 
+--file num
 CREATE SEQUENCE board_file_seq;
 
+-- 카테고리 테이블
 CREATE TABLE board_category(
-   num NUMBER NOT NULL,
+   num VARCHAR2(100) NOT NULL,
    tab_name VARCHAR2(100) NOT NULL,
    tab_sub VARCHAR2(100),
-   roomsize NUMBER
 );
+
+-- 게시글을 작성할 테이블
+CREATE TABLE board_cafe2(
+	num NUMBER PRIMARY KEY,--글번호
+	category VARCHAR2(100),
+	writer VARCHAR2(100) NOT NULL, --작성자 (로그인된 아이디)
+	title VARCHAR2(100) NOT NULL, --제목
+	content CLOB, -- 글 내용
+	viewCount NUMBER, --조회수
+	regdate DATE --글 작성일
+);
+
+-- 게시글의 번호를 얻어낼 시퀀스
+CREATE SEQUENCE board_cafe_seq;
