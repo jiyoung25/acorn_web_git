@@ -4,16 +4,18 @@ public class CategoryDto {
 	private String num;
 	private String tab_name;
 	private String tab_sub;
+	private int bignum;
 	
 	public CategoryDto() {
 		
 	}
 	
-	public CategoryDto(String num, String tab_name, String tab_sub) {
+	public CategoryDto(String num, String tab_name, String tab_sub, int bignum) {
 		super();
 		this.num = num;
 		this.tab_name = tab_name;
 		this.tab_sub = tab_sub;
+		this.bignum = bignum;
 	}
 
 	public String getNum() {
@@ -34,4 +36,13 @@ public class CategoryDto {
 	public void setTab_sub(String tab_sub) {
 		this.tab_sub = tab_sub;
 	}
+
+	public int getBignum() {
+		return bignum;
+	}
+
+	public void setBignum(int bignum) {
+		this.bignum = bignum;
+	}
+	
 }

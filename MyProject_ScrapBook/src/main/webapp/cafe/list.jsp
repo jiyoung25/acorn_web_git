@@ -47,11 +47,16 @@
 	dto.setEndRowNum(endRowNum);
 	
 	List<CafeDto> list = null;
-	List<CategoryDto> list1 = CategoryDao.getInstance().getData(1);
-	List<CategoryDto> list2 = CategoryDao.getInstance().getData(2);
-	List<CategoryDto> list3 = CategoryDao.getInstance().getData(3);
 	
-	String category = request.getParameter("category");
+	String category = null;
+	
+	if(request.getParameter("category") !=null ){
+		category = request.getParameter("category");
+	} else {
+		category ="all";
+	}
+	System.out.println(category);
+	
 	if(category.equals("all")){
 		list = CafeDao.getInstance().getRowList(dto);
 	} else if(category.equals("dwell")){
@@ -63,6 +68,11 @@
 	} else{
 		list = CafeDao.getInstance().getRowList(dto, category);
 	}
+	
+	//tab_name의 개수
+	int nameNum = CategoryDao.getInstance().getNameSize();
+	
+	System.out.println(list.get(0).getNum());
 	
 %>
 
@@ -81,13 +91,17 @@
 		<h3>카페 글 목록입니다.</h3>
 		<%if(category.equals("all")){%>
 			<select name="category" id="category">
-				<%for(int i=0; i<list1.size();i++){ %>
-					<otpgroup label="<%=list1.get(i).getTab_name() %>">
-						<%for(CategoryDto tmp:list1){%>
-							<option value="<%=tmp.getNum() %>"><%=tmp.getTab_sub() %></option>
+				<%for(int i=0; i<nameNum; i++){
+					//name마다 sub의 개수
+					int subNum = CategoryDao.getInstance().getSubSize(i+1);
+					List<CategoryDto> tlist = CategoryDao.getInstance().getData(i+1);
+					%>
+					<otpgroup label="<%=tlist.get(i).getTab_name() %>">
+						<%for(int j=0; j<subNum; j++){%>
+							<option value="<%=tlist.get(j).getNum() %>"><%=tlist.get(j).getTab_sub() %></option>
 						<%} %>
 					</otpgroup>
-				<%} %>
+				<%} %> 
 			</select>
 		<%} %>
 		<table class = "table table-striped">
@@ -105,7 +119,7 @@
 				<%for(CafeDto tmp:list){ %>
 					<tr>
 						<td><%=tmp.getNum() %></td>
-						<td><%=CategoryDao.getInstance().getData((tmp.getCategory())).getTab_name() %> > <%=CategoryDao.getInstance().getData((tmp.getCategory())).getTab_sub() %> </td>
+						<%-- <td><%=CategoryDao.getInstance().getData((tmp.getCategory())).getTab_name() %> > <%=CategoryDao.getInstance().getData((tmp.getCategory())).getTab_sub() %> </td>--%>
 						<td><%=tmp.getWriter() %></td>
 						<td><a href = "${pageContext.request.contextPath}/cafe/detail.jsp?num=<%=tmp.getNum() %>&category=<%=category%>"><%=tmp.getTitle() %></a></td>
 						<td><%=tmp.getViewCount() %></td>
