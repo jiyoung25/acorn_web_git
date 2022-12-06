@@ -6,7 +6,7 @@
 
 	<nav class="navbar navbar-light bg-light navbar-expand-lg">
 		<div class="container-fluid">
-		    <a class="navbar-brand" href="${pageContext.request.contextPath}/">
+		    <a class="navbar-brand" href="${pageContext.request.contextPath}/index2.jsp">
 		      	<img src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
 		      	MonkeyStrap
 		    </a>

@@ -66,6 +66,7 @@
 
 </head>
 <body>
+	<%-- 
 	<%if(id==null) {%>
 		<jsp:include page="/include/navbar.jsp">
 			<jsp:param value="file" name="thisPage"/>
@@ -74,8 +75,13 @@
 		<jsp:include page="/include/navbar2.jsp">
 			<jsp:param value="file" name="thisPage"/>
 		</jsp:include>
-	<%} %>
-	
+		
+	<%} %>--%>
+
+	<%-- 페이지를 include시킬 때에는 WEB-INF폴더에 있는 페이지도 include가 가능하다.(client와 상관이 없는 이동이기 때문에. servlet->jsp로 forward시킬 때와 마찬가지임--%>
+	<jsp:include page="/WEB-INF/include/navbar.jsp">
+		<jsp:param value="file" name="thisPage" />		
+	</jsp:include>
    	<div class="container-lg list">
       	<a class="btn btn-primary" href="${pageContext.request.contextPath}/file/private/upload_form.jsp">업로드 하기
       		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">

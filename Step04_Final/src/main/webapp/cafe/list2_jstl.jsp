@@ -79,6 +79,7 @@
 	</style>
 </head>
 <body>
+<%-- 
 	<%if(id==null) {%>
 		<jsp:include page="/include/navbar.jsp">
 			<jsp:param value="cafe" name="thisPage" />
@@ -87,7 +88,12 @@
 		<jsp:include page="/include/navbar2.jsp">
 			<jsp:param value="cafe" name="thisPage" />
 		</jsp:include>
-	<%} %>
+	<%} %>--%>
+	
+	<%-- 페이지를 include시킬 때에는 WEB-INF폴더에 있는 페이지도 include가 가능하다.(client와 상관이 없는 이동이기 때문에. servlet->jsp로 forward시킬 때와 마찬가지임--%>
+	<jsp:include page="/WEB-INF/include/navbar.jsp">
+		<jsp:param value="cafe" name="thisPage" />		
+	</jsp:include>
 	
 	<div class="container">
 		<a class="btn btn-primary" href="${pageContext.request.contextPath}/cafe/private/insertform.jsp">새 글 작성

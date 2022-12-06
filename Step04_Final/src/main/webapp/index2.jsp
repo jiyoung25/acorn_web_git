@@ -28,13 +28,18 @@
 	</style>
 </head>
 <body>
+	<%-- 
 	<%if(id==null) {%>
 		<jsp:include page="/include/navbar.jsp">
 			<jsp:param value="index" name="thisPage"/>
 		</jsp:include>
 	<%} else{ %>
 		<jsp:include page="/include/navbar2.jsp"></jsp:include>
-	<%} %>
+	<%} %>--%>
+	
+	<%-- 페이지를 include시킬 때에는 WEB-INF폴더에 있는 페이지도 include가 가능하다.(client와 상관이 없는 이동이기 때문에. servlet->jsp로 forward시킬 때와 마찬가지임--%>
+	<jsp:include page="/WEB-INF/include/navbar.jsp"/>
+	
 	<%--
 
 		1. ${sessionScope.id != null}
@@ -52,7 +57,7 @@
 			</p>
 		</c:when>
 		<c:otherwise>
-			<a href="${pageContext.request.contextPath}/users/login.jsp">로그인</a>
+			<a href="${pageContext.request.contextPath}/users/loginform.jsp">로그인</a>
 		</c:otherwise>
 	</c:choose>
 	
