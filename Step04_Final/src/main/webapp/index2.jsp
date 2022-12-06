@@ -35,6 +35,26 @@
 	<%} else{ %>
 		<jsp:include page="/include/navbar2.jsp"></jsp:include>
 	<%} %>
+	<%--
+
+		1. ${sessionScope.id != null}
+		2. ${id!= null}
+		3. ${id ne null}
+		4. ${ not empty id}
+		
+		el에서 1~4는 모두 같은 결과이다.
+		--%>
+	<c:choose>
+		<c:when test="${sessionScope.id != null }">
+			<p>
+				<a href="${pageContext.request.contextPath}/users/private/info.jsp">${id }</a>님 로그인 중...
+				<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
+			</p>
+		</c:when>
+		<c:otherwise>
+			<a href="${pageContext.request.contextPath}/users/login.jsp">로그인</a>
+		</c:otherwise>
+	</c:choose>
 	
 	<div class="container">
 		<hr class="border border-danger border-4 opacity-50">
